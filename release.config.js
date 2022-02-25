@@ -5,18 +5,23 @@ const branch = process.env.GIT_BRANCH;
  * All microservices extends from this
  */
 module.exports = {
-  branches: ['prod', 'staging'],
+  branches: [
+    'prod',
+    {
+      name: 'staging',
+      prerelease: true,
+    },
+  ],
   extends: 'semantic-release-monorepo',
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
-    // only release
+    ['@semantic-release/npm', {
+      npmPublish: branch === 'prod',
+    }],
+    // only in production
     ...(branch === 'prod' ? [
-      '@semantic-release/npm',
       '@semantic-release/github',
-    ] : [
-      // only update package.json version in staging branch
-      "@semantic-release/update-package-json",
-    ]),
+    ] : []),
   ]
 }

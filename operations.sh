@@ -163,7 +163,7 @@ function runLintStaged() {
 
 # run semantic release
 function runSemanticRelease() {
-  with_dry_run="${1:-yes}"
+  with_dry_run="${1:-no}"
 
   token=${GITHUB_TOKEN:=}
   branch=${GIT_BRANCH:=}
